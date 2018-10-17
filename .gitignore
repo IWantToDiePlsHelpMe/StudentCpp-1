@@ -4,5 +4,9 @@
 *.h
 Debug/
 .vs/
+<<<<<<< HEAD
 *.sln
 *.gitattributes
+=======
+*.sln
+>>>>>>> master
