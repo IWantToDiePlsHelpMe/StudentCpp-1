@@ -1,11 +1,2 @@
-pch.cpp
-*.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
-*.h
 Debug/
 .vs/
-<<<<<<< HEAD
-*.gitattributes
-=======
->>>>>>> master
