@@ -1,3 +1,4 @@
+pch.cpp
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
