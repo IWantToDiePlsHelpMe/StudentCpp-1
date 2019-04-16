@@ -16,14 +16,12 @@ public:
 		Node* temp = new Node;
 		temp->data = book;
 		temp->next = NULL;
-		//temp->prev = NULL;
 
 		if (head == NULL) {
 			head = temp;
 			return;
 		}
 		temp->next = head;
-		//head->prev = temp;
 		head = temp;
 	}
 	void print() {
@@ -47,7 +45,6 @@ private:
 	public:
 		Book data;
 		Node* next;
-		//Node* prev;
 	};
 	Node* head = nullptr;
 };
@@ -72,5 +69,4 @@ int main()
 		list.addFirst(book);
 	}
 	list.print();
-	//list.clear();
 }

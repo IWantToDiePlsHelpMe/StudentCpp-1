@@ -23,7 +23,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="ConsoleApplication2.cpp">
+    <ClCompile Include="template_Int.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
