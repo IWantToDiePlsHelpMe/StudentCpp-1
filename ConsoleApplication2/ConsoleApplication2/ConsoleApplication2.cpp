@@ -7,7 +7,7 @@ using namespace std;
 template<typename T>
 class List {
 public:
-	void addFirst(int book) {
+	void addFirst(T book) {
 		Node<T> *temp = new Node<T>;
 		temp->data = book;
 		temp->next = NULL;
