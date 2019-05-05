@@ -7,10 +7,10 @@ using namespace std;
 
 class Book {
 public:
-	char* name;
-	unsigned int year;
+	char* name = 0;
+	unsigned int year = 0;
 };
-template<typename T>
+template<class T>
 class List {
 public:
 	~List() {
@@ -19,6 +19,9 @@ public:
 			delete head;
 			head = next;
 		}
+		//Node<T> * temp = head;
+
+
 	}
 	void addFirst(T book) {
 		Node<T> *temp = new Node<T>;
@@ -39,10 +42,20 @@ public:
 		while (temp != nullptr) {
 			cout << temp->data.name << " (" << temp->data.year << ")" << endl;
 			temp = temp->next;
+			//cout << temp->data;
+			//if (data.name == 0 && data.year == 0) {
+			//	cout << temp->data.name << " (" << temp->data.year << ")" << endl;
+			//	temp = temp->next;
+			//}
+			//else {
+			//	cout << temp->data;
+			//	temp = temp->next;
+			//}
+
 		}
 	}
 private:
-	template<typename T>
+	template<class T>
 	class Node {
 	public:
 		T data;
@@ -71,5 +84,17 @@ int main()
 		list.addFirst(book);
 	}
 	list.print();
+	cout << endl << endl << endl;
+
+/*	List<int> list1;
+	for (int i = 0; i < size; i++) {
+		int nodes;
+
+		cout << "Book " << i << ". Year: ";
+		cin >> nodes;
+
+		list1.addFirst(nodes);
+	}
+	list1.print();*/
 	return 0;
 }
