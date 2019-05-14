@@ -19,9 +19,6 @@ public:
 			delete head;
 			head = next;
 		}
-		//Node<T> * temp = head;
-
-
 	}
 	void addFirst(T book) {
 		Node<T> *temp = new Node<T>;
@@ -35,7 +32,7 @@ public:
 		head = temp;
 	}
 	void getNode() {
-
+		
 	}
 	void print() {
 		Node<T> *temp = head;
