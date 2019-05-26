@@ -20,6 +20,5 @@ public:
 
 int main()
 {
-	//Kandidat kand("popov", 1945, "cantina");
 	
 }

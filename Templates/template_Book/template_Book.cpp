@@ -31,24 +31,11 @@ public:
 		temp->next = head;
 		head = temp;
 	}
-	void getNode() {
-		
-	}
 	void print() {
 		Node<T> *temp = head;
 		while (temp != nullptr) {
 			cout << temp->data.name << " (" << temp->data.year << ")" << endl;
 			temp = temp->next;
-			//cout << temp->data;
-			//if (data.name == 0 && data.year == 0) {
-			//	cout << temp->data.name << " (" << temp->data.year << ")" << endl;
-			//	temp = temp->next;
-			//}
-			//else {
-			//	cout << temp->data;
-			//	temp = temp->next;
-			//}
-
 		}
 	}
 private:
@@ -81,17 +68,7 @@ int main()
 		list.addFirst(book);
 	}
 	list.print();
-	cout << endl << endl << endl;
+	cout << endl;
 
-/*	List<int> list1;
-	for (int i = 0; i < size; i++) {
-		int nodes;
-
-		cout << "Book " << i << ". Year: ";
-		cin >> nodes;
-
-		list1.addFirst(nodes);
-	}
-	list1.print();*/
 	return 0;
 }
