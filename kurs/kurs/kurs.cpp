@@ -31,6 +31,8 @@ class Queue {
 		unsigned int prior;
 		Elem* next;
 	};
+	Elem* tmp;
+	Elem* tmp1;
 	Elem* head1;
 	Elem* head;
 	Elem* last;
@@ -63,6 +65,18 @@ public:
 					last->next->prior = prior;
 					last->next->next = nullptr;
 					last = last->next;
+				}
+				else {
+					for (tmp = head; tmp != last; tmp = tmp->next) {
+						if (prior >= tmp->next->prior) {
+							tmp1 = new Elem;
+							tmp1->next = tmp->next;
+							tmp->next = tmp1;
+							tmp1->obj = val;
+							tmp1->prior = prior;
+							break;
+						}
+					}
 				}
 			}
 		}
