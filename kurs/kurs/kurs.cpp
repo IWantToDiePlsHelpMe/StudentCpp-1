@@ -9,19 +9,17 @@ class Node {
 	string name;
 	string year;
 	string city;
-	unsigned int prior;
 public:
 	Node() {
 		name = "";
 		year = "";
 		city = "";
-		prior = 0;
 	}
-	Node(string name, string year, string city, unsigned int prior) : name(name), year(year), city(city), prior(prior) {
+	Node(string name, string year, string city) : name(name), year(year), city(city) {
 	}
 	friend ostream& operator<<(ostream& os, Node& n)
 	{
-		return os << "FIO - " << n.name << " Year - " << n.year << " City - " << n.city << " Prior - " << n.prior;
+		return os << "Name - " << n.name << " Year - " << n.year << " City - " << n.city;
 	}
 };
 
@@ -30,26 +28,43 @@ template<class T>
 class Queue {
 	struct Elem {
 		T obj;
+		unsigned int prior;
 		Elem* next;
 	};
+	Elem* head1;
 	Elem* head;
 	Elem* last;
 	Elem* iterator;
 public:
 	Queue() : head(nullptr) {}
 
-	void push(T val) {
+	void push(T val, unsigned int prior) {
 		if (head == nullptr) {
 			head = new Elem;
 			head->obj = val;
+			head->prior = prior;
 			head->next = nullptr;
 			last = head;
 		}
 		else {
-			last->next = new Elem;
-			last->next->obj = val;
-			last->next->next = nullptr;
-			last = last->next;
+			head1 = head;
+			if (prior > head->prior) {
+				head = new Elem;
+				head->next = head1;
+				head->next->obj = head1->obj;
+				head->next->prior = head1->prior;
+				head->obj = val;
+				head->prior = prior;
+			}
+			else {
+				if (prior <= last->prior) {
+					last->next = new Elem;
+					last->next->obj = val;
+					last->next->prior = prior;
+					last->next->next = nullptr;
+					last = last->next;
+				}
+			}
 		}
 	}
 	void pop() {
@@ -58,7 +73,6 @@ public:
 		}
 		else {
 			head = head->next;
-			
 		}
 	}
 	void begin() {
@@ -67,6 +81,9 @@ public:
 	void next()
 	{
 		iterator = iterator->next;
+	}
+	unsigned int showprior() {
+		return iterator->prior;
 	}
 	T& getCurrent()
 	{
@@ -82,42 +99,45 @@ int main()
 {
 	Queue<Node> q;
 	int choice;
-	bool f = true;
-	string name, city, year, str;
-	unsigned int  prior;
+	string name, city, year;
+	unsigned int prior;
 	fstream fout;
 	ifstream file_check("file.txt", ios::in);
-	if (file_check.peek() != ifstream::traits_type::eof()) { //возможно нужно изменить доработать для считывания строки но не слова
-		while (!file_check.eof()) {
+	if (file_check.peek() != ifstream::traits_type::eof()) {
+		while (true) {
 			file_check >> name;
 			file_check >> year;
 			file_check >> city;
 			file_check >> prior;
-			q.push(Node(name, year, city, prior));
+			if (file_check.eof()) break;
+			q.push(Node(name, year, city), prior);
 		}
-		
 	}
-	cout << "Choose what you want to do 1add 2delete 3show 4break: ";
 	do {
+		cout << "Choose what you want to do 1) Push 2) Pop 3) Show 4) Save and Exit : ";
 		cin >> choice;
 		switch (choice) {
 		case 1:
 			cout << "Enter application" << endl;
 			fout.open("file.txt", ios::out | ios::app);
-			cin >> name;
-			cin >> year;
-			cin >> city;
-			cin >> prior;
+			cout << "Name - "; cin >> name;
+			cout << "Year - "; cin >> year;
+			cout << "City - "; cin >> city;
+			cout << "Priority(1-4) - "; cin >> prior;
 			cout << endl;
-			fout << name << endl << year << endl << city << endl << prior << endl;
-			q.push(Node(name, year, city, prior));
+			fout << name << endl
+				<< year << endl
+				<< city << endl
+				<< prior << endl;
+			q.push(Node(name, year, city), prior);
 			fout.close();
 			break;
 		case 2:
 			q.pop();
+			choice = 3;
 			break;
 		case 3:
-			for (q.begin(); !q.isEnd(); q.next()) cout << q.getCurrent() << endl;
+			for (q.begin(); !q.isEnd(); q.next()) cout << q.getCurrent() << " Priority - " << q.showprior()  << endl;
 			break;
 		case 4:
 			return 0;
