@@ -9,20 +9,30 @@ class Node {
 	string name;
 	string year;
 	string city;
+	string str = name + year + city;
 public:
 	Node() {
 		name = "";
 		year = "";
 		city = "";
 	}
-	Node(string name, string year, string city) : name(name), year(year), city(city) {
+	Node(string name, string year, string city) : name(name), year(year), city(city) {}
+
+	string get_str() {
+		return str;
 	}
+
 	friend ostream& operator<<(ostream& os, Node& n)
 	{
 		return os << "Name - " << n.name << " Year - " << n.year << " City - " << n.city;
 	}
+	friend bool operator== (Node& x, Node& y);
+
 };
 
+bool operator== (Node& x, Node& y) {
+	return (x.name == y.name && x.year == y.year && x.city == y.city);
+}
 
 template<class T>
 class Queue {
@@ -31,6 +41,7 @@ class Queue {
 		unsigned int prior;
 		Elem* next;
 	};
+	int delete_iterator = 0;
 	Elem* tmp;
 	Elem* tmp1;
 	Elem* head1;
@@ -81,6 +92,17 @@ public:
 			}
 		}
 	}
+	void delete_app(T value) {
+		for (tmp = head; tmp != last; tmp = tmp->next) {
+			if (value == tmp->next->obj) {
+				tmp->next = tmp->next->next;
+				delete_iterator++;
+			}
+		}
+	}
+	int get_di() {
+		return delete_iterator;
+	}
 	void pop() {
 		if (head == nullptr) {
 			cout << "Queue is empty";
@@ -113,16 +135,18 @@ int main()
 {
 	Queue<Node> q;
 	int choice;
+	string namefd, yearfd, cityfd;
 	string name, city, year;
 	unsigned int prior;
 	fstream fout;
 	ifstream file_check("file.txt", ios::in);
 	if (file_check.peek() != ifstream::traits_type::eof()) {
 		while (true) {
-			file_check >> name;
-			file_check >> year;
-			file_check >> city;
+			getline(file_check, name);
+			getline(file_check, year);
+			getline(file_check, city);
 			file_check >> prior;
+			file_check.ignore();
 			if (file_check.eof()) break;
 			q.push(Node(name, year, city), prior);
 		}
@@ -134,9 +158,13 @@ int main()
 		case 1:
 			cout << "Enter application" << endl;
 			fout.open("file.txt", ios::out | ios::app);
-			cout << "Name - "; cin >> name;
-			cout << "Year - "; cin >> year;
-			cout << "City - "; cin >> city;
+			cout << "Name - ";
+			cin.ignore();
+			getline(cin, name);
+			cout << "Year - ";
+			getline(cin, year);
+			cout << "City - ";
+			getline(cin, city);
 			cout << "Priority(1-4) - "; cin >> prior;
 			cout << endl;
 			fout << name << endl
@@ -147,8 +175,12 @@ int main()
 			fout.close();
 			break;
 		case 2:
-			q.pop();
-			choice = 3;
+			cin.ignore();
+			getline(cin, namefd);
+			getline(cin, yearfd);
+			getline(cin, cityfd);
+			q.delete_app(Node(namefd,yearfd,cityfd));
+
 			break;
 		case 3:
 			for (q.begin(); !q.isEnd(); q.next()) cout << q.getCurrent() << " Priority - " << q.showprior()  << endl;
