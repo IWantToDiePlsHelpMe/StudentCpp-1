@@ -9,7 +9,6 @@ class Node {
 	string name;
 	string year;
 	string city;
-	string str = name + year + city;
 public:
 	Node() {
 		name = "";
@@ -17,10 +16,6 @@ public:
 		city = "";
 	}
 	Node(string name, string year, string city) : name(name), year(year), city(city) {}
-
-	string get_str() {
-		return str;
-	}
 
 	friend ostream& operator<<(ostream& os, Node& n) {
 		return os << "Name - " << n.name << endl << "Year - " << n.year << endl << "City - " << n.city << endl;
@@ -128,7 +123,7 @@ public:
 		f.close();
 	}
 	bool sameCheck(T value, unsigned int prior) {
-		if (value == head->obj && prior == head->prior) {
+		if (head != nullptr && (value == head->obj && prior == head->prior)) {
 			return true;
 		}
 		for (tmp = head; tmp != last; tmp = tmp->next) {
@@ -182,7 +177,6 @@ int main() {
 			if (q.sameCheck(Node(name, year, city), prior)) cout << "You already have same application" << endl;
 			else {
 				q.push(Node(name, year, city), prior);
-
 			}
 			cout << endl;
 			break;

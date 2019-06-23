@@ -1,7 +1,3 @@
-Name - qwe
-Year - 123
-City - qwe
-3
 Name - asd
 Year - 123
 City - asd
