@@ -88,7 +88,7 @@ public:
 			}
 		}
 	}
-	void delete_app(T value) {
+	void deleteApp(T value) {
 		if (value == head->obj) {
 			head = head->next;
 		}
@@ -127,6 +127,17 @@ public:
 		}
 		f.close();
 	}
+	bool sameCheck(T value, unsigned int prior) {
+		if (value == head->obj && prior == head->prior) {
+			return true;
+		}
+		for (tmp = head; tmp != last; tmp = tmp->next) {
+			if (value == tmp->next->obj && prior == tmp->next->prior) {
+				return true;
+			}
+		}
+		return false;
+	}
 };
 
 int main() {
@@ -135,7 +146,6 @@ int main() {
 	string namefd, yearfd, cityfd;
 	string name, city, year;
 	unsigned int prior;
-	fstream fout;
 	ifstream file_check("file.txt", ios::in);
 	if (file_check.peek() != ifstream::traits_type::eof()) {
 		while (true) {
@@ -160,7 +170,6 @@ int main() {
 		switch (choice) {
 		case 1:
 			cout << "Enter application" << endl;
-			fout.open("file.txt", ios::out | ios::app);
 			cout << "Name - ";
 			cin.ignore();
 			getline(cin, name);
@@ -168,10 +177,14 @@ int main() {
 			getline(cin, year);
 			cout << "City - ";
 			getline(cin, city);
-			cout << "Priority(1-4) - "; cin >> prior;
+			cout << "Priority(1-4) - ";
+			cin >> prior;
+			if (q.sameCheck(Node(name, year, city), prior)) cout << "You already have same application" << endl;
+			else {
+				q.push(Node(name, year, city), prior);
+
+			}
 			cout << endl;
-			q.push(Node(name, year, city), prior);
-			fout.close();
 			break;
 		case 2:
 			if (q.isEmpty()) cout << "Queue is empty, you can't delete anything" << endl; 
@@ -184,7 +197,7 @@ int main() {
 				getline(cin, yearfd);
 				cout << "City - ";
 				getline(cin, cityfd);
-				q.delete_app(Node(namefd, yearfd, cityfd));
+				q.deleteApp(Node(namefd, yearfd, cityfd));
 			}
 			break;
 		case 3:
