@@ -22,17 +22,14 @@ public:
 		return str;
 	}
 
-	friend ostream& operator<<(ostream& os, Node& n)
-	{
-		return os << "Name - " << n.name << " Year - " << n.year << " City - " << n.city;
+	friend ostream& operator<<(ostream& os, Node& n) {
+		return os << "Name - " << n.name << endl << "Year - " << n.year << endl << "City - " << n.city << endl;
 	}
-	friend bool operator== (Node& x, Node& y);
 
+	friend bool operator== (Node& x, Node& y) {
+		return (x.name == y.name && x.year == y.year && x.city == y.city);
+	}
 };
-
-bool operator== (Node& x, Node& y) {
-	return (x.name == y.name && x.year == y.year && x.city == y.city);
-}
 
 template<class T>
 class Queue {
@@ -41,7 +38,6 @@ class Queue {
 		unsigned int prior;
 		Elem* next;
 	};
-	int delete_iterator = 0;
 	Elem* tmp;
 	Elem* tmp1;
 	Elem* head1;
@@ -93,48 +89,49 @@ public:
 		}
 	}
 	void delete_app(T value) {
-		for (tmp = head; tmp != last; tmp = tmp->next) {
-			if (value == tmp->next->obj) {
-				tmp->next = tmp->next->next;
-				delete_iterator++;
-			}
-		}
-	}
-	int get_di() {
-		return delete_iterator;
-	}
-	void pop() {
-		if (head == nullptr) {
-			cout << "Queue is empty";
+		if (value == head->obj) {
+			head = head->next;
 		}
 		else {
-			head = head->next;
+			for (tmp = head; tmp != last; tmp = tmp->next) {
+				if (value == tmp->next->obj) {
+					tmp->next = tmp->next->next;
+				}
+			}
 		}
 	}
 	void begin() {
 		iterator = head;
 	}
-	void next()
-	{
+	void next() {
 		iterator = iterator->next;
 	}
-	unsigned int showprior() {
+	unsigned int getPrior() {
 		return iterator->prior;
 	}
-	T& getCurrent()
-	{
+	T& getCurrent() {
 		return iterator->obj;
 	}
-	bool isEnd()
-	{
+	bool isEnd() {
 		return iterator == nullptr;
+	}
+	bool isEmpty() {
+		if (head == nullptr) return true;
+		else return false;
+	}
+	void queueToDoc() {
+		fstream f;
+		f.open("file.txt", ios::out | ios::app);
+		for (tmp = head; tmp != nullptr; tmp = tmp->next) {
+			f << tmp->obj << tmp->prior << endl;
+		}
+		f.close();
 	}
 };
 
-int main()
-{
+int main() {
 	Queue<Node> q;
-	int choice;
+	int choice, i = 1;
 	string namefd, yearfd, cityfd;
 	string name, city, year;
 	unsigned int prior;
@@ -143,16 +140,22 @@ int main()
 	if (file_check.peek() != ifstream::traits_type::eof()) {
 		while (true) {
 			getline(file_check, name);
+			name.erase(0, 7);
 			getline(file_check, year);
+			year.erase(0, 7);
 			getline(file_check, city);
+			city.erase(0, 7);
 			file_check >> prior;
 			file_check.ignore();
 			if (file_check.eof()) break;
 			q.push(Node(name, year, city), prior);
 		}
 	}
+	ofstream ofs;
+	ofs.open("file.txt", ios::out | ios::trunc);
+	ofs.close();
 	do {
-		cout << "Choose what you want to do 1) Push 2) Pop 3) Show 4) Save and Exit : ";
+		cout << "Choose what you want to do 1) Add 2) Delete 3) Show 4) Save and Exit : ";
 		cin >> choice;
 		switch (choice) {
 		case 1:
@@ -167,26 +170,34 @@ int main()
 			getline(cin, city);
 			cout << "Priority(1-4) - "; cin >> prior;
 			cout << endl;
-			fout << name << endl
-				<< year << endl
-				<< city << endl
-				<< prior << endl;
 			q.push(Node(name, year, city), prior);
 			fout.close();
 			break;
 		case 2:
-			cin.ignore();
-			getline(cin, namefd);
-			getline(cin, yearfd);
-			getline(cin, cityfd);
-			q.delete_app(Node(namefd,yearfd,cityfd));
-
+			if (q.isEmpty()) cout << "Queue is empty, you can't delete anything" << endl; 
+			else {
+				cin.ignore();
+				cout << "Input data for deleting:" << endl;
+				cout << "Name - ";
+				getline(cin, namefd);
+				cout << "Year - ";
+				getline(cin, yearfd);
+				cout << "City - ";
+				getline(cin, cityfd);
+				q.delete_app(Node(namefd, yearfd, cityfd));
+			}
 			break;
 		case 3:
-			for (q.begin(); !q.isEnd(); q.next()) cout << q.getCurrent() << " Priority - " << q.showprior()  << endl;
+			if(q.isEmpty()) cout << "Queue is empty" << endl;
+			for (q.begin(); !q.isEnd(); q.next()) {
+				cout << "Application #" << i << endl << q.getCurrent() << "Priority - " << q.getPrior() << endl;
+				i++;
+			}
+			i = 1;
 			break;
 		case 4:
+			q.queueToDoc();
 			return 0;
 		}
-	} while (choice !=  4);
+	} while (choice != 4);
 }
