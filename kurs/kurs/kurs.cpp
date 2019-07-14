@@ -87,6 +87,9 @@ public:
 		if (value == head->obj) {
 			head = head->next;
 		}
+		//if (value == last->obj) {
+		//
+		//}
 		else {
 			for (tmp = head; tmp != last; tmp = tmp->next) {
 				if (value == tmp->next->obj) {
@@ -197,7 +200,7 @@ int main() {
 		case 3:
 			if(q.isEmpty()) cout << "Queue is empty" << endl;
 			for (q.begin(); !q.isEnd(); q.next()) {
-				cout << "Application #" << i << endl << q.getCurrent() << "Priority - " << q.getPrior() << endl;
+				cout << "Application #" << i << endl << q.getCurrent() << "Priority - " << q.getPrior() << endl << endl;
 				i++;
 			}
 			i = 1;
