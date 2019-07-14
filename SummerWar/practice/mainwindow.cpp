@@ -166,18 +166,18 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 void MainWindow::numButtonToText() {
-    QPushButton *button = (QPushButton *)sender();
+    QPushButton *button = static_cast<QPushButton*>(sender());
     write(button->text());
 }
 
 void MainWindow::simpleActButtonToText() {
-    QPushButton *button = (QPushButton *)sender();
+    QPushButton *button = static_cast<QPushButton*>(sender());
     pow_click = false;
     write(button->text());
 }
 
 void MainWindow::actButtonToText() {
-    QPushButton *button = (QPushButton *)sender();
+    QPushButton *button = static_cast<QPushButton*>(sender());
     write(button->text());
 }
 
@@ -189,16 +189,17 @@ void MainWindow::on_pushButton_pow_clicked()
 }
 
 void MainWindow::write(QString input) {
-    if(input == "√") {
-        buff = buff + '%';
-        ui->label->setText(ui->label->text() + input);
-        substring = substring + QChar(0x2004);
-    } else {
+
     if(pow_click == false) {
+        if(input == "√") {
+            buff = buff + '%';
+            ui->label->setText(ui->label->text() + input);
+            substring = substring + QChar(0x3000);
+        } else {
         buff = buff + input;
         ui->label->setText(ui->label->text() + input);
-        substring = substring + QChar(0x2004);
-
+        substring = substring + QChar(0x3000);
+    }
     } else {
         if(input != "^") {
             buff = buff + input;
@@ -210,8 +211,9 @@ void MainWindow::write(QString input) {
             ui->powlabel->setText(substring);
             buff = buff + input;
         }
-    }}
+    }
 }
+
 
 void MainWindow::on_pushButton_c_clicked()
 {
@@ -244,7 +246,6 @@ void MainWindow::on_pushButton_rav_clicked()
 {
     QString result;
     string input = buff.toLocal8Bit().constData();
-    ui->label_2->setText(QString::fromStdString(input));
     if(input_error(input) == true) {
         ui->error_label->setStyleSheet("QLabel {color : black; font-size : 10pt; }");
         ui->error_label->setText("Ты даун? Сотри и введи нормально");
@@ -270,7 +271,7 @@ void MainWindow::on_pushButton_kor_clicked()
     int i = buff.length() - 1;
     while (i >= 0 &&  buff[i] != '+' && buff[i] != '-' && buff[i] != '*' && buff[i] != '/' && buff[i] != '^') {
         substring[i] = buff[i];
-        text[i] = QChar(0x2004);
+        text[i] = QChar(0x300);
         ui->label->setText(text);
         ui->powlabel->setText(substring);
         i--;
@@ -330,6 +331,11 @@ bool MainWindow::input_error(string input) {
             }
         }
         if (act_check(input[i]) && input[i] != '-') dot = false;
+        if (input[i] == 's' && input[i+1] == 'i' && input[i + 2] == 'n' && (!isdigit(input[i+3]) || input[i+3] == '.' || input[i+3] == ')')) return true;
+        if (input[i] == 'c' && input[i+1] == 'o' && input[i + 2] == 's' && (!isdigit(input[i+3]) || input[i+3] == '.' || input[i+3] == ')')) return true;
+        if (input[i] == 't' && input[i+1] == 'a' && input[i + 2] == 'n' && (!isdigit(input[i+3]) || input[i+3] == '.' || input[i+3] == ')')) return true;
+        if (input[i] == 'l' && input[i+1] == 'o' && input[i + 2] == 'g' && (!isdigit(input[i+3]) || input[i+3] == '.' || input[i+3] == ')')) return true;
+        if (input[i] == 'l' && input[i+1] == 'n' && (!isdigit(input[i+3]) || input[i+2] == '.' || input[i+2] == ')')) return true;
     }
     if (lb_count != rb_count) return true;
     return false;
