@@ -307,6 +307,7 @@ bool MainWindow::input_error(string input) {
     int lb_count = 0, rb_count = 0;
     if (input.length() == 0) return true;
     for (unsigned int i = 0; i < input.length(); i++) {
+        if (input[i] == '/' && input[i + 1] == '0') return true;
         if (act_check(input[0])) return true;
         if (act_check(input[input.length() - 1]) && input[i] != '-') return true;
         if (act_check(input[i]) && act_check(input[i + 1])) return true;
