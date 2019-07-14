@@ -237,7 +237,7 @@ void MainWindow::on_pushButton_rav_clicked()
     QString result;
     string input = buff.toLocal8Bit().constData();
     if(input_error(input) == true) {
-        ui->error_label->setStyleSheet("QLabel {color : black; font-size : 10pt; }");
+        ui->error_label->setStyleSheet("QLabel {color : black; font-size : 8pt; }");
         ui->error_label->setText("Некорректное выражение. Введите заново");
     } else {
         result = QString::fromStdString(to_string(mainFunc(input)));
