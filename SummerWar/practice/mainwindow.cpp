@@ -433,8 +433,3 @@ double MainWindow::mainFunc(string input) {
     }
     return num.top();
 }
-
-void MainWindow::on_pushButton_clicked()
-{
-    ui->label_2->setText(buff);
-}
