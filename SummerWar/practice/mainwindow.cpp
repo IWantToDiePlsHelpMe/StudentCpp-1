@@ -13,7 +13,6 @@ using namespace std;
 
 static bool pow_click = false;
 static QString buff;
-static QString substring;
 static QString rootstring;
 
 
@@ -189,27 +188,19 @@ void MainWindow::on_pushButton_pow_clicked()
 }
 
 void MainWindow::write(QString input) {
-
-    if(pow_click == false) {
+    if (pow_click == false) {
         if(input == "√") {
-            buff = buff + '%';
+            buff = buff + "%";
             ui->label->setText(ui->label->text() + input);
-            substring = substring + QChar(0x3000);
         } else {
-        buff = buff + input;
-        ui->label->setText(ui->label->text() + input);
-        substring = substring + QChar(0x3000);
-    }
+       buff = buff + input;
+       ui->label->setText(ui->label->text() + input); }
     } else {
-        if(input != "^") {
+        if (input == "^") {
             buff = buff + input;
-            substring = substring + input;
-            ui->powlabel->setText(substring);
-            ui->label->setText(ui->label->text() + QChar(0x2004));
         } else {
-            substring = substring + QChar(0x2004);
-            ui->powlabel->setText(substring);
             buff = buff + input;
+            ui->label->setText(ui->label->text() + "<sup>" + input + "</sup>");
         }
     }
 }
@@ -218,26 +209,25 @@ void MainWindow::write(QString input) {
 void MainWindow::on_pushButton_c_clicked()
 {
     pow_click = false;
-    substring.clear();
     buff.clear();
     ui->label->clear();
-    ui->powlabel->clear();
     ui->error_label->clear();
 }
 
 void MainWindow::on_pushButton_bs_clicked()
 {
     if(buff.length() != 0) {
-        if(buff[buff.length() - 1] == '^') {
-            buff.resize(buff.length()-1);
+    QString temp = ui->label->text();
+        if (temp[temp.length() - 1] != '>') {
+            buff.resize(buff.length() - 1);
+            temp.resize(temp.length() - 1);
+            ui->label->setText(buff);
             pow_click = false;
         } else {
-            buff.resize(buff.length()-1);
-            substring.resize(substring.length() - 1);
-            QString text_to_resize = ui->label->text();
-            text_to_resize.resize(text_to_resize.length() - 1);
-            ui->label->setText(text_to_resize);
-            ui->powlabel->setText(substring);
+            buff.resize(buff.length() - 1);
+            temp.resize(temp.length() - 12);
+            ui->label->setText(temp);
+            pow_click = true;
         }
     }
 }
@@ -258,7 +248,6 @@ void MainWindow::on_pushButton_rav_clicked()
             i--;
         }
         ui->label->setText(ui->label->text() + " = " + result);
-        //ui->label->setText(result);
     }
 
 }
@@ -266,16 +255,20 @@ void MainWindow::on_pushButton_rav_clicked()
 
 void MainWindow::on_pushButton_kor_clicked()
 {
-    QString text = ui->label->text();
-    //QString substring = ui->powlabel-text();
-    int i = buff.length() - 1;
-    while (i >= 0 &&  buff[i] != '+' && buff[i] != '-' && buff[i] != '*' && buff[i] != '/' && buff[i] != '^') {
-        substring[i] = buff[i];
-        text[i] = QChar(0x300);
-        ui->label->setText(text);
-        ui->powlabel->setText(substring);
+    QString root_flipped = "";
+    QString root;
+    QString forroot = buff;
+    int i = forroot.length() - 1;
+    while (i >= 0 && buff[i] != '+' && buff[i] != '-' && buff[i] != '*' && buff[i] != '/' && buff[i] != '^') {
+        root_flipped += forroot[i];
+        forroot[i] = ' ';
         i--;
     }
+    root.resize(root_flipped.length());
+    for (i = 0; i < root_flipped.length(); i++) {
+         root[root.length() - 1 - i] = root_flipped[i];
+    }
+    ui->label->setText(forroot + "<sup>" + root + "</sup>");
     write("√");
 }
 
@@ -439,4 +432,9 @@ double MainWindow::mainFunc(string input) {
         calctostack(num, act);
     }
     return num.top();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->label_2->setText(buff);
 }
