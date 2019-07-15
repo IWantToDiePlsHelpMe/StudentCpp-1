@@ -247,7 +247,7 @@ void MainWindow::on_pushButton_bs_clicked()
 void MainWindow::on_pushButton_rav_clicked()
 {
 
-    //if(eq_pressed == false) {
+    if(eq_pressed == false) {
     QString result;
     string input = buff.toLocal8Bit().constData();
     if(input_error(input) == true) {
@@ -263,7 +263,7 @@ void MainWindow::on_pushButton_rav_clicked()
         }
         ui->label->setText(ui->label->text() + " = " + result);
     }
-    //}
+    }
     eq_pressed = true;
 }
 
