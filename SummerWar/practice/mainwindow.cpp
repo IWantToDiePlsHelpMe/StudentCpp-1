@@ -257,11 +257,11 @@ void MainWindow::on_pushButton_kor_clicked()
 {
     QString root_flipped = "";
     QString root;
-    QString forroot = buff;
-    int i = forroot.length() - 1;
+    QString forroot = ui->label->text();
+    int i = buff.length() - 1;
     while (i >= 0 && buff[i] != '+' && buff[i] != '-' && buff[i] != '*' && buff[i] != '/' && buff[i] != '^') {
-        root_flipped += forroot[i];
-        forroot[i] = ' ';
+        root_flipped += buff[i];
+        forroot.resize(forroot.length()-1);
         i--;
     }
     root.resize(root_flipped.length());
