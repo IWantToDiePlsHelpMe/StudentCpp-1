@@ -14,6 +14,7 @@ using namespace std;
 static bool pow_click = false;
 static QString buff;
 static QString rootstring;
+static bool eq_pressed = false;
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -166,25 +167,33 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
 void MainWindow::numButtonToText() {
     QPushButton *button = static_cast<QPushButton*>(sender());
+    if(eq_pressed == false) {
     write(button->text());
+    }
 }
 
 void MainWindow::simpleActButtonToText() {
     QPushButton *button = static_cast<QPushButton*>(sender());
+    if(eq_pressed == false) {
     pow_click = false;
     write(button->text());
+    }
 }
 
 void MainWindow::actButtonToText() {
     QPushButton *button = static_cast<QPushButton*>(sender());
+    if(eq_pressed == false) {
     write(button->text());
+    }
 }
 
 
 void MainWindow::on_pushButton_pow_clicked()
 {
+    if(eq_pressed == false) {
     pow_click = true;
     write("^");
+    }
 }
 
 void MainWindow::write(QString input) {
@@ -212,10 +221,12 @@ void MainWindow::on_pushButton_c_clicked()
     buff.clear();
     ui->label->clear();
     ui->error_label->clear();
+    eq_pressed = false;
 }
 
 void MainWindow::on_pushButton_bs_clicked()
 {
+    if(eq_pressed == false) {
     if(buff.length() != 0) {
     QString temp = ui->label->text();
         if (temp[temp.length() - 1] != '>') {
@@ -230,10 +241,13 @@ void MainWindow::on_pushButton_bs_clicked()
             pow_click = true;
         }
     }
+    }
 }
 
 void MainWindow::on_pushButton_rav_clicked()
 {
+
+    //if(eq_pressed == false) {
     QString result;
     string input = buff.toLocal8Bit().constData();
     if(input_error(input) == true) {
@@ -249,12 +263,14 @@ void MainWindow::on_pushButton_rav_clicked()
         }
         ui->label->setText(ui->label->text() + " = " + result);
     }
-
+    //}
+    eq_pressed = true;
 }
 
 
 void MainWindow::on_pushButton_kor_clicked()
 {
+    if(eq_pressed == false) {
     QString root_flipped = "";
     QString root;
     QString forroot = ui->label->text();
@@ -270,6 +286,7 @@ void MainWindow::on_pushButton_kor_clicked()
     }
     ui->label->setText(forroot + "<sup>" + root + "</sup>");
     write("√");
+    }
 }
 
 
