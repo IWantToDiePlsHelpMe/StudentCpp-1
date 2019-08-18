@@ -8,7 +8,7 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QPainter>
-
+//люблю этого котенка
 using namespace std;
 
 static bool pow_click = false;
